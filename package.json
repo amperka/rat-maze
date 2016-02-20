@@ -1,0 +1,11 @@
+{
+  "name": "labirint",
+  "version": "1.0.0",
+  "description": "labirint for rat",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Amperka",
+  "license": "ISC"
+}
