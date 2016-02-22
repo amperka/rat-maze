@@ -1,1 +1,0 @@
-Sample project to demostrate using Socket.io in Node.js
