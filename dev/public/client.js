@@ -6,18 +6,20 @@ var socket = io();
 setInterval(function () {
 	socket.emit('allDoors', '');
 	console.log('allDoors');
-	socket.on('allDoors', function(req_result) {
+	socket.on('allDoors', function (req_result) {
 		doors = JSON.parse(req_result);
-		for(id in doors)
-		{
+		for(id in doors) {
 			setState(buttons[id]);
 		}
 	});
 }, 10000);
 
 window.onload = function () {
+
+	sendButton = document.getElementById('send');
+
 	socket.emit('labirint_setup', '');
-	socket.on('labirint_setup', function(req_result) {
+	socket.on('labirint_setup', function (req_result) {
 
 		doors = JSON.parse(req_result);
 
@@ -33,8 +35,7 @@ window.onload = function () {
 		}
 
 		var elements = controlButtons.getElementsByClassName('ctrlBtn');
-		for(var i = 0; i < elements.length; ++i)
-		{
+		for(var i = 0; i < elements.length; ++i) {
 			buttons[elements[i].id] = elements[i];
 
 			setState(buttons[elements[i].id]);
@@ -54,8 +55,7 @@ function setState(el) {
 		el.textContent = 'X';
 	}
 
-	if(doors[el.id].cd > 0)
-	{
+	if(doors[el.id].cd > 0) {
 		//el.classList.add('ctrlBtn_busy');
 		el.setAttribute('disabled', 'true');
 	} else {
@@ -71,9 +71,22 @@ function doorAction(el) {
 	}));
 }
 
-socket.on('door', function(msg){
+socket.on('door', function (msg) {
 	var resp = JSON.parse(msg);
-	//debugger;
 	doors[resp.id] = resp.data;
 	setState(buttons[resp.id]);
+});
+
+function sendMessage() {
+	var textEl = document.getElementById("message_input");
+	var msg = textEl.value;
+	textEl.value = '';
+	if(msg != '') {
+		socket.emit("message_to_server", { message : msg});
+	}
+}
+
+socket.on("message_to_client", function (data) {
+	document.getElementById("chatlog").innerHTML = ("<hr/>" +
+	data['message'] + document.getElementById("chatlog").innerHTML);
 });
