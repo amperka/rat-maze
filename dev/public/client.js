@@ -56,25 +56,44 @@ function setState(el) {
 	}
 
 	if(doors[el.id].cd > 0) {
-		//el.classList.add('ctrlBtn_busy');
 		el.setAttribute('disabled', 'true');
 	} else {
-		//el.classList.remove('ctrlBtn_busy');
 		el.removeAttribute('disabled');
 	}		
 }
 
 function doorAction(el) {
-	socket.emit('door', JSON.stringify({
-		id : el.id,
-		s : doors[el.id].st
-	}));
+	socket.emit('door', JSON.stringify({id : el.id, s : doors[el.id].st}));
 }
 
 socket.on('door', function (msg) {
 	var resp = JSON.parse(msg);
 	doors[resp.id] = resp.data;
 	setState(buttons[resp.id]);
+});
+
+function voteAction(action) {
+	socket.emit('vote', JSON.stringify({action: action}));
+}
+
+socket.on('vote', function (msg) {
+	var resp = JSON.parse(msg);
+	console.log(resp);
+	var action = resp.id;
+	var state = resp.data;
+	var timer = document.getElementById(action+'Timer');
+	var button = document.getElementById(action+'Button'); 
+	var timerCounter = state.cd;
+	button.setAttribute('disabled', 'true');
+	var tId = setInterval(function () {
+		if(timerCounter-- === 0) {
+			timer.innerHTML = '&nbsp;';
+			clearInterval(tId);
+			button.removeAttribute('disabled');
+		} else {
+			timer.innerHTML = timerCounter + ' сек.';
+		}
+	}, 1000);
 });
 
 function sendMessage() {
