@@ -114,6 +114,9 @@ body {
 	border-radius: 40px;
 	box-shadow: 2px 3px 3px rgba(0,0,0,0.5);
 }
+.voteClicker:active .voteButton {
+	box-shadow: 0px 0px 0px rgba(0,0,0,0.5);
+}
 .voteButtonScare {
 	background-color: #d72e31;
 }

@@ -20,7 +20,6 @@
     "max-nested-callbacks": [2, 3],
     "max-statements": [1, 25],
     "new-cap": 1,
-    "new-cap": 2,
     "no-extend-native": 2,
     "no-extra-semi": 2,
     "no-mixed-spaces-and-tabs": 2,
@@ -36,10 +35,9 @@
     "quotes": [2, "single", "avoid-escape"],
     "semi": [2, "always"],
     "semi-spacing": [2, {"before": false, "after": true}],
-    "space-after-keywords": [2, "always"],
+    "keyword-spacing": [2, {"before": true, "after": true, "overrides": {}}],
     "space-before-function-paren": [2, "never"],
     "space-in-parens": [2, "never"],
-    "space-unary-ops": 2,
     "space-unary-ops": [1, {"words": true, "nonwords": false}],
     "spaced-comment": [2, "always"],
     "yoda": [2, "never"]
@@ -54,6 +52,7 @@
     "A5": false,
     "E": false,
     "P1": false,
+    "P0": false,
     "P10": false,
     "P11": false,
     "P12": false,
@@ -66,8 +65,12 @@
     "P7": false,
     "P8": false,
     "P9": false,
+    "B15": false,
+    "B14": false,
+    "B13": false,
     "SCL": false,
     "SDA": false,
+    "SPI2": false,
     "analogRead": false,
     "analogWrite": false,
     "changeInterval": false,
@@ -81,6 +84,8 @@
     "getTime": false,
     "setInterval": false,
     "setTimeout": false,
-    "setWatch": false
+    "setWatch": false,
+    "require": false,
+    "print": false
   }
 }
