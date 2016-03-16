@@ -27,6 +27,7 @@ module.exports = function (grunt) {
 					cwd: 'dev',
 					src: '**/*.js',
 					dest: 'prod'
+					//flatten: true   // remove all unnecessary nesting
 				}]
 			}
 		},
@@ -83,6 +84,6 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-htmlmin');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 
-	grunt.registerTask('default', ['shell']);
-	grunt.registerTask('prod', ['uglify:prod', 'sass:build', 'htmlmin:prod', 'copy', 'shell:prod']);
+	grunt.registerTask('default', ['shell:dev']);
+	grunt.registerTask('prod', ['uglify:prod', 'sass:build', 'htmlmin:prod', 'copy']);
 };
