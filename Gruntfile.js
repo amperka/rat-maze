@@ -12,8 +12,8 @@ module.exports = function (grunt) {
 			prod: {
 				command: 'node index.js',
 				options: {
-					stderr: false,
-					stdout: false,
+					stderr: true,
+					stdout: true,
 					execOptions: {
 						cwd: 'prod'
 					}

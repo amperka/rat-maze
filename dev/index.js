@@ -186,5 +186,5 @@ fs.readFile(buttonStatisticFile, 'utf8', function(err, data) {
         }
         console.log('save clicked buttons statistic: ', buttonClicked);
       });
-  }, 10000);
+  }, 60000);
 });
