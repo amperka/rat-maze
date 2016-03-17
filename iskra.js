@@ -17,7 +17,7 @@ var doors = {
   d2: {servo: servo.connect(A1), state: 'c', angle: 45, min: 19, max: 60},
   d3: {servo: servo.connect(A2), state: 'c', angle: 45, min: 5, max: 50},
   d4: {servo: servo.connect(A3), state: 'c', angle: 45, min: 17, max: 50},
-  d5: {servo: servo.connect(P0), state: 'c', angle: 45, min: 10, max: 60},
+  d5: {servo: servo.connect(P0), state: 'c', angle: 45, min: 20, max: 60},
   d7: {servo: servo.connect(P2), state: 'c', angle: 45, min: 0, max: 50},
   d8: {servo: servo.connect(P3), state: 'c', angle: 45, min: 9, max: 50},
   d9: {servo: servo.connect(P5), state: 'c', angle: 45, min: 19, max: 70},
@@ -26,7 +26,7 @@ var doors = {
   d12: {servo: servo.connect(P9), state: 'c', angle: 45, min: 0, max: 50},
   d13: {servo: servo.connect(P11), state: 'c', angle: 45, min: 5, max: 60},
   d14: {servo: servo.connect(P12), state: 'c', angle: 45, min: 5, max: 50},
-  d15: {servo: servo.connect(P13), state: 'c', angle: 45, min: 30, max: 90},
+  d15: {servo: servo.connect(P13), state: 'c', angle: 45, min: 20, max: 90},
   d16: {servo: servo.connect(SDA), state: 'c', angle: 45, min: 14, max: 75},
   d17: {servo: servo.connect(SCL), state: 'c', angle: 45, min: 4, max: 50}
 };
