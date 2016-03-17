@@ -2,7 +2,7 @@ body {
 	margin: auto 0;
 }
 .wrapper {
-	background-color: #F60;
+	background-color: #FF6600;
 	max-width: 740px;
 	width: 740px;
 	padding: 20px;
@@ -41,6 +41,36 @@ body {
 }
 .ctrlBtn_busy {
 	opacity: 0.5;
+}
+.tg  {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+.tg td {
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	padding: 10px 5px;
+	border-style: solid;
+	border-color: #FF6600;
+	border-width: 2px;
+	overflow: hidden;
+	word-break: normal;
+}
+.tg th {
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+	padding: 10px 5px;
+	border-style: solid;
+	border-color: #FF6600;
+	border-width: 2px;
+	overflow: hidden;
+	word-break: normal;
+}
+.tg .tg-yw4l {
+	vertical-align: top;
+	min-width: 30px;
+	min-height: 30px;
 }
 .ivideon {
 	margin-top: 20px;

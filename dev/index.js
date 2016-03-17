@@ -27,7 +27,7 @@ var doors = {
   d4: {st: 'o', cd: 0},
   d5: {st: 'o', cd: 0},
   d7: {st: 'o', cd: 0},
-  d8: {st: 'o', cd: 0},
+  //d8: {st: 'o', cd: 0},
   d9: {st: 'o', cd: 0},
   d10: {st: 'o', cd: 0},
   d11: {st: 'o', cd: 0},
@@ -37,6 +37,25 @@ var doors = {
   d15: {st: 'o', cd: 0},
   d16: {st: 'o', cd: 0},
   d17: {st: 'o', cd: 0}
+};
+
+var doorsForClients = {
+  d1: {text: '1'},
+  d2: {text: '2'},
+  d3: {text: '3'},
+  d4: {text: '4'},
+  d5: {text: '5'},
+  d7: {text: '7'},
+  //d8: {text: '8'},
+  d9: {text: '9'},
+  d10: {text: '10'},
+  d11: {text: '11'},
+  d12: {text: '12'},
+  d13: {text: '13'},
+  d14: {text: '14'},
+  d15: {text: '15'},
+  d16: {text: '16'},
+  d17: {text: '17'}
 };
 
 var vote = {
@@ -54,7 +73,7 @@ setInterval(function() {
   }
   for (i in vote) {
     if (--vote[i].cd === 0) {
-      console.log('vote['+i+'] ready!');
+      // console.log('vote['+i+'] ready!');
       vote[i].st = 'c';
       io.emit('vote', JSON.stringify({id: i, data: vote[i]}));
     }
@@ -92,12 +111,12 @@ app.use('/', express.static('public'));
 
 io.on('connection', function(socket) {
 
-  console.log('new connection: ' + socket.id);
+  // console.log('new connection: ' + socket.id);
   var user = socket.id;
 
   socket.on('labirint_setup', function(msg) {
-    console.log('labirint_setup: ' + msg);
-    io.sockets.connected[user].emit('labirint_setup', JSON.stringify(doors));
+    // console.log('labirint_setup: ' + msg);
+    io.sockets.connected[user].emit('labirint_setup', JSON.stringify(doorsForClients));
   });
 
   socket.on('allDoors', function(msg) {
@@ -105,30 +124,30 @@ io.on('connection', function(socket) {
   });
 
   socket.on('disconnect', function(){
-    console.log('user ' + user + ' disconnected');
+    // console.log('user ' + user + ' disconnected');
   });
 
   socket.on('door', function(msg) {
-    console.log('door: ' + msg);
+    // console.log('door: ' + msg);
     var req = JSON.parse(msg);
     var id = req.id;
     var state = req.s;
     var status = doorAction(id, state);
     if (status !== undefined) {
-      console.log(status);
+      // console.log(status);
     }
     io.emit('door', JSON.stringify({id: id, data: doors[id]}));
   });
 
   socket.on('vote', function(msg) {
-    console.log('vote: ' + msg);
+    // console.log('vote: ' + msg);
     var req = JSON.parse(msg);
     var action = req.action;
     if (vote[action] !== undefined) {
       buttonClicked[action] += 1;
       var status = voteAction(action);
       if (status !== undefined) {
-        console.log(status);
+        // console.log(status);
       } else {
         io.sockets.connected[user].emit('vote', JSON.stringify({
           id: action,
@@ -146,21 +165,27 @@ io.on('connection', function(socket) {
 });
 
 http.listen(HTTP_PORT, function() {
-  console.log('listening on: ' + HTTP_PORT);
+  // console.log('listening on: ' + HTTP_PORT);
 });
 
 // UDP server
 var iskraServer = require("net").createServer(function(socket) {
   socket.on('data', function(data) {
-    console.log('Server received: ' + data);
-    socket.write(JSON.stringify({
-      feed: vote.feed.st,
-      scare: vote.scare.st,
-      doors: doors
-    }));
-    vote.feed.st = 'c';
-    vote.scare.st = 'c';
-    console.log('votes commands sent to Iskra.JS and reset');
+    // console.log('Server received: ' + data);
+    if (data == 'Get') {
+      socket.write(JSON.stringify({
+        feed: vote.feed.st,
+        scare: vote.scare.st,
+        doors: doors
+      }));
+      vote.feed.st = 'c';
+      vote.scare.st = 'c';
+    }
+    if (data == 'Scare') {
+      socket.write(JSON.stringify({scare: vote.scare.st}));
+      vote.scare.st = 'c';
+    }
+    // console.log('votes commands sent to Iskra.JS and reset');
   });
   // socket.write(JSON.stringify(servos));
   socket.pipe(socket);
@@ -170,21 +195,21 @@ iskraServer.listen(UDP_PORT, '0.0.0.0');
 // read and write file with vote statistics
 fs.readFile(buttonStatisticFile, 'utf8', function(err, data) {
   if (err) {
-    console.log(err);
+    // console.log(err);
     fs.writeFile('button_statistic.json', JSON.stringify(buttonClicked),
       function(err) {
-        return console.log(err);
+        return // console.log(err);
       });
   }
-  console.log('read clicked buttons statistic: ', data);
+  // console.log('read clicked buttons statistic: ', data);
   buttonClicked = JSON.parse(data);
   setInterval(function() {
     fs.writeFile(buttonStatisticFile, JSON.stringify(buttonClicked),
       function(err) {
         if (err) {
-          return console.log(err);
+          return // console.log(err);
         }
-        console.log('save clicked buttons statistic: ', buttonClicked);
+        // console.log('save clicked buttons statistic: ', buttonClicked);
       });
   }, 60000);
 });

@@ -30,6 +30,7 @@ window.onload = function() {
       btn.onclick = function() {
         doorAction(this);
       };
+      btn.textContent = doors[index].text;
       controlButtons.appendChild(btn);
     }
 
@@ -45,11 +46,11 @@ function setState(el) {
   if (doors[el.id].st === 'o') {
     el.classList.add('ctrlBtn_opened');
     el.classList.remove('ctrlBtn_closed');
-    el.textContent = 'O';
+    //el.textContent = 'O';
   } else {
     el.classList.add('ctrlBtn_closed');
     el.classList.remove('ctrlBtn_opened');
-    el.textContent = 'X';
+    //el.textContent = 'X';
   }
 
   if (doors[el.id].cd > 0) {
