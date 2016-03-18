@@ -4,8 +4,9 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var fs = require('fs');
+var path = require('path');
 
-var buttonStatisticFile = 'button_statistic.json';
+var buttonStatisticFile = '/button_statistic.json';
 var buttonClicked = {feed: 0, scare: 0};
 
 var HTTP_PORT = 3002;
@@ -13,6 +14,9 @@ var UDP_PORT = 3003;
 
 var COOLDOWN_SECONDS = 3;
 var VOTE_COOLDOWN_SECONDS = 20;
+
+console.log(__dirname);
+console.log(process.cwd());
 
 /*
   o - open/opened
@@ -105,7 +109,8 @@ function voteAction(action) {
   }
 }
 
-app.use('/', express.static('public'));
+// app.use('/', express.static(path.join(__dirname, 'public')));
+app.use('/', express.static(__dirname+'/public'));
 
 io.on('connection', function(socket) {
 
@@ -182,10 +187,10 @@ var iskraServer = require('net').createServer(function(socket) {
 iskraServer.listen(UDP_PORT, '0.0.0.0');
 
 // read and write file with vote statistics
-fs.readFile(buttonStatisticFile, 'utf8', function(err, data) {
+fs.readFile(__dirname + buttonStatisticFile, 'utf8', function(err, data) {
   if (err) {
     // console.log(err);
-    fs.writeFile('button_statistic.json', JSON.stringify(buttonClicked),
+    fs.writeFile(__dirname + buttonStatisticFile, JSON.stringify(buttonClicked),
       function(err) {
         console.log(err);
         return;
@@ -196,7 +201,7 @@ fs.readFile(buttonStatisticFile, 'utf8', function(err, data) {
     buttonClicked = JSON.parse(data);
   }
   setInterval(function() {
-    fs.writeFile(buttonStatisticFile, JSON.stringify(buttonClicked),
+    fs.writeFile(__dirname + buttonStatisticFile, JSON.stringify(buttonClicked),
       function(err) {
         if (err) {
           console.log(err);
