@@ -24,7 +24,7 @@ window.onload = function() {
 
     for (var index in doors) {
       var btn = document.createElement('button');
-      btn.className = 'ctrlBtn';
+      btn.className = 'ctrlBtn btn btn-default';
       // debugger;
       btn.id = index;
       btn.onclick = function() {
@@ -45,11 +45,15 @@ window.onload = function() {
 function setState(el) {
   if (doors[el.id].st === 'o') {
     el.classList.add('ctrlBtn_opened');
+    el.classList.add('btn-default');
     el.classList.remove('ctrlBtn_closed');
+    el.classList.remove('btn-warning');
     // el.textContent = 'O';
-  } else {
+  } else if (doors[el.id].st === 'c') {
     el.classList.add('ctrlBtn_closed');
+    el.classList.add('btn-warning');
     el.classList.remove('ctrlBtn_opened');
+    el.classList.remove('btn-default');
     // el.textContent = 'X';
   }
 
