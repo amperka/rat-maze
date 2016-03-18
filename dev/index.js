@@ -8,8 +8,8 @@ var fs = require('fs');
 var buttonStatisticFile = 'button_statistic.json';
 var buttonClicked = {feed: 0, scare: 0};
 
-var HTTP_PORT = 3000;
-var UDP_PORT = 1337;
+var HTTP_PORT = 3002;
+var UDP_PORT = 3003;
 
 var COOLDOWN_SECONDS = 3;
 var VOTE_COOLDOWN_SECONDS = 20;
