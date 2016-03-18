@@ -46,11 +46,11 @@ function setState(el) {
   if (doors[el.id].st === 'o') {
     el.classList.add('ctrlBtn_opened');
     el.classList.remove('ctrlBtn_closed');
-    //el.textContent = 'O';
+    // el.textContent = 'O';
   } else {
     el.classList.add('ctrlBtn_closed');
     el.classList.remove('ctrlBtn_opened');
-    //el.textContent = 'X';
+    // el.textContent = 'X';
   }
 
   if (doors[el.id].cd > 0) {
@@ -92,18 +92,4 @@ socket.on('vote', function(msg) {
       timer.innerHTML = timerCounter + ' сек.';
     }
   }, 1000);
-});
-
-function sendMessage() {
-  var textEl = document.getElementById('message_input');
-  var msg = textEl.value;
-  textEl.value = '';
-  if (msg !== '') {
-    socket.emit('message_to_server', {message: msg});
-  }
-}
-
-socket.on('message_to_client', function(data) {
-  document.getElementById('chatlog').innerHTML = ('<hr/>' +
-  data['message'] + document.getElementById('chatlog').innerHTML);
 });

@@ -157,10 +157,6 @@ io.on('connection', function(socket) {
     }
   });
 
-  socket.on('message_to_server', function(data) {
-    io.sockets.emit('message_to_client', {message: data['message']});
-  });
-
 });
 
 http.listen(HTTP_PORT, function() {
@@ -171,19 +167,13 @@ http.listen(HTTP_PORT, function() {
 var iskraServer = require('net').createServer(function(socket) {
   socket.on('data', function(data) {
     // console.log('Server received: ' + data);
-    if (data == 'Get') {
-      socket.write(JSON.stringify({
-        feed: vote.feed.st,
-        scare: vote.scare.st,
-        doors: doors
-      }));
-      vote.feed.st = 'c';
-      vote.scare.st = 'c';
-    }
-    if (data == 'Scare') {
-      socket.write(JSON.stringify({scare: vote.scare.st}));
-      vote.scare.st = 'c';
-    }
+    socket.write(JSON.stringify({
+      feed: vote.feed.st,
+      scare: vote.scare.st,
+      doors: doors
+    }));
+    vote.feed.st = 'c';
+    vote.scare.st = 'c';
     // console.log('votes commands sent to Iskra.JS and reset');
   });
   // socket.write(JSON.stringify(servos));
