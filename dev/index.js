@@ -27,7 +27,6 @@ var doors = {
   d4: {st: 'o', cd: 0},
   d5: {st: 'o', cd: 0},
   d7: {st: 'o', cd: 0},
-  //d8: {st: 'o', cd: 0},
   d9: {st: 'o', cd: 0},
   d10: {st: 'o', cd: 0},
   d11: {st: 'o', cd: 0},
@@ -45,17 +44,16 @@ var doorsForClients = {
   d3: {text: '3'},
   d4: {text: '4'},
   d5: {text: '5'},
-  d7: {text: '7'},
-  //d8: {text: '8'},
-  d9: {text: '9'},
-  d10: {text: '10'},
-  d11: {text: '11'},
-  d12: {text: '12'},
-  d13: {text: '13'},
-  d14: {text: '14'},
-  d15: {text: '15'},
-  d16: {text: '16'},
-  d17: {text: '17'}
+  d7: {text: '6'},
+  d9: {text: '7'},
+  d10: {text: '8'},
+  d11: {text: '9'},
+  d12: {text: '10'},
+  d13: {text: '11'},
+  d14: {text: '12'},
+  d15: {text: '13'},
+  d16: {text: '14'},
+  d17: {text: '15'}
 };
 
 var vote = {
@@ -114,12 +112,13 @@ io.on('connection', function(socket) {
   // console.log('new connection: ' + socket.id);
   var user = socket.id;
 
-  socket.on('labirint_setup', function(msg) {
+  socket.on('labirint_setup', function() {
     // console.log('labirint_setup: ' + msg);
-    io.sockets.connected[user].emit('labirint_setup', JSON.stringify(doorsForClients));
+    io.sockets.connected[user].emit('labirint_setup',
+      JSON.stringify(doorsForClients));
   });
 
-  socket.on('allDoors', function(msg) {
+  socket.on('allDoors', function() {
     io.sockets.connected[user].emit('allDoors', JSON.stringify(doors));
   });
 
@@ -169,7 +168,7 @@ http.listen(HTTP_PORT, function() {
 });
 
 // UDP server
-var iskraServer = require("net").createServer(function(socket) {
+var iskraServer = require('net').createServer(function(socket) {
   socket.on('data', function(data) {
     // console.log('Server received: ' + data);
     if (data == 'Get') {
@@ -198,16 +197,20 @@ fs.readFile(buttonStatisticFile, 'utf8', function(err, data) {
     // console.log(err);
     fs.writeFile('button_statistic.json', JSON.stringify(buttonClicked),
       function(err) {
-        return // console.log(err);
+        console.log(err);
+        return;
       });
   }
-  // console.log('read clicked buttons statistic: ', data);
-  buttonClicked = JSON.parse(data);
+  console.log('read clicked buttons statistic: ', data);
+  if (data != null) {
+    buttonClicked = JSON.parse(data);
+  }
   setInterval(function() {
     fs.writeFile(buttonStatisticFile, JSON.stringify(buttonClicked),
       function(err) {
         if (err) {
-          return // console.log(err);
+          console.log(err);
+          return;
         }
         // console.log('save clicked buttons statistic: ', buttonClicked);
       });
