@@ -172,17 +172,23 @@ http.listen(HTTP_PORT, function() {
 var iskraServer = require('net').createServer(function(socket) {
   socket.on('data', function(data) {
     // console.log('Server received: ' + data);
+
+    var sendDoors = {};
+    for(var id in doors) {
+      sendDoors[id] = doors[id].st;
+    }
     socket.write(JSON.stringify({
       feed: vote.feed.st,
       scare: vote.scare.st,
-      doors: doors
+      doors: sendDoors
     }));
     vote.feed.st = 'c';
     vote.scare.st = 'c';
+
     // console.log('votes commands sent to Iskra.JS and reset');
   });
   // socket.write(JSON.stringify(servos));
-  socket.pipe(socket);
+  // socket.pipe(socket);
 });
 iskraServer.listen(UDP_PORT, '0.0.0.0');
 
