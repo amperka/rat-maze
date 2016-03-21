@@ -42,24 +42,6 @@ var doors = {
   d17: {st: 'o', cd: 0, text: '15'}
 };
 
-/*var doorsForClients = {
-  d1: {text: '1'},
-  d2: {text: '2'},
-  d3: {text: '3'},
-  d4: {text: '4'},
-  d5: {text: '5'},
-  d7: {text: '6'},
-  d9: {text: '7'},
-  d10: {text: '8'},
-  d11: {text: '9'},
-  d12: {text: '10'},
-  d13: {text: '11'},
-  d14: {text: '12'},
-  d15: {text: '13'},
-  d16: {text: '14'},
-  d17: {text: '15'}
-};*/
-
 var vote = {
   feed: {st: 'o', cd: 0},
   scare: {st: 'o', cd: 0}
@@ -137,9 +119,6 @@ io.on('connection', function(socket) {
     var id = req.id;
     var state = req.s;
     var status = doorAction(id, state);
-    if (status !== undefined) {
-      // console.log(status);
-    }
     io.emit('door', JSON.stringify({id: id, data: doors[id]}));
   });
 
@@ -165,16 +144,14 @@ io.on('connection', function(socket) {
 });
 
 http.listen(HTTP_PORT, function() {
-  // console.log('listening on: ' + HTTP_PORT);
 });
 
 // UDP server
 var iskraServer = require('net').createServer(function(socket) {
   socket.on('data', function(data) {
-    // console.log('Server received: ' + data);
 
     var sendDoors = {};
-    for(var id in doors) {
+    for (var id in doors) {
       sendDoors[id] = doors[id].st;
     }
     socket.write(JSON.stringify({
@@ -185,10 +162,8 @@ var iskraServer = require('net').createServer(function(socket) {
     vote.feed.st = 'c';
     vote.scare.st = 'c';
 
-    // console.log('votes commands sent to Iskra.JS and reset');
   });
-  // socket.write(JSON.stringify(servos));
-  // socket.pipe(socket);
+
 });
 iskraServer.listen(UDP_PORT, '0.0.0.0');
 
