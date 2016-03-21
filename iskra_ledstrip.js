@@ -12,7 +12,7 @@ var arr = new Uint8ClampedArray(32*3);
 var scareCooldown = 3000;
 
 // подключаем библиотеку 'servo' для работы с сервоприводами
-var servo = require('@amperka/servo');
+var servo = require('servo');
 
 // создаем объект для хранения информации о 17 сервоприводах.
 // servo - объект для работы с сервоприводом.
@@ -22,18 +22,18 @@ var servo = require('@amperka/servo');
 // max - максимальный угол сервопривода. Соответствует полностью открытой двери
 var doors = {
   d1: {servo: servo.connect(A0), state: 'c', angle: 45, min: 6, max: 50},
-  d2: {servo: servo.connect(A1), state: 'c', angle: 45, min: 19, max: 60},
+  d2: {servo: servo.connect(A1), state: 'c', angle: 45, min: 10, max: 60},
   d3: {servo: servo.connect(A2), state: 'c', angle: 45, min: 5, max: 50},
   d4: {servo: servo.connect(A3), state: 'c', angle: 45, min: 17, max: 50},
   d5: {servo: servo.connect(P0), state: 'c', angle: 45, min: 20, max: 60},
-  d7: {servo: servo.connect(P2), state: 'c', angle: 45, min: 0, max: 50},
+  d7: {servo: servo.connect(P2), state: 'c', angle: 45, min: 5, max: 50},
   d9: {servo: servo.connect(P5), state: 'c', angle: 45, min: 19, max: 70},
   d10: {servo: servo.connect(P6), state: 'c', angle: 45, min: 10, max: 50},
   d11: {servo: servo.connect(P8), state: 'c', angle: 45, min: 1, max: 50},
-  d12: {servo: servo.connect(P9), state: 'c', angle: 45, min: 0, max: 50},
+  d12: {servo: servo.connect(P9), state: 'c', angle: 45, min: 5, max: 50},
   d13: {servo: servo.connect(P11), state: 'c', angle: 45, min: 5, max: 60},
   d14: {servo: servo.connect(P12), state: 'c', angle: 45, min: 5, max: 50},
-  d15: {servo: servo.connect(P13), state: 'c', angle: 45, min: 20, max: 90},
+  d15: {servo: servo.connect(P13), state: 'c', angle: 45, min: 15, max: 90},
   d16: {servo: servo.connect(SDA), state: 'c', angle: 45, min: 14, max: 75},
   d17: {servo: servo.connect(SCL), state: 'c', angle: 45, min: 4, max: 50}
 };
@@ -46,7 +46,7 @@ var feedCooldown = 10000;
 // подключаем Ethernet Shield 2 к интерфейсу SPI2
 eth.setIP();
 // создаем сокет-соединение на указанный IP адрес сервера и порт
-net.connect({host: '192.168.10.178', port: 1337}, function(socket) {
+net.connect({host: 'maze.amperka.ru', port: 3003}, function(socket) {
   // каждые 3000 миллисекунд посылаем запрос на обновление состояний дверей
   setInterval(function() {
     socket.write('Get');
@@ -55,13 +55,13 @@ net.connect({host: '192.168.10.178', port: 1337}, function(socket) {
   socket.on('data', function(recieved) {
     // разворачиваем принятые данные в javascript объект
     var data = JSON.parse(recieved);
-    if (data === undefined) {
+    if (typeof data !== 'object') {
       return;
     }
     var ptintOutAngle = [];                    // DELETE!!!
     // для каждой двери обновляем текущее состояние
     for (var door in data.doors) {
-      doors[door].state = data.doors[door].st;
+      doors[door].state = data.doors[door];
       ptintOutAngle.push(doors[door].angle); // DELETE!!!
     }
     console.log(ptintOutAngle);                 // DELETE!!!
@@ -88,6 +88,8 @@ setInterval(function() {
       // если дверь закрыта не полностью, уменьшаем угол сервопривода
       if (doors[door].angle > doors[door].min) {
         doors[door].angle -= 2;
+        // изменяем управляющий сигнал на сервопривод
+        doors[door].servo.write(doors[door].angle);
       }
     }
     // если для сервопривода установлено состояние 'o' ("открыто")
@@ -95,10 +97,10 @@ setInterval(function() {
       // если дверь открыта не полностью, увеличиваем угол сервопривода
       if (doors[door].angle < doors[door].max) {
         doors[door].angle += 5;
+        // изменяем управляющий сигнал на сервопривод
+        doors[door].servo.write(doors[door].angle);
       }
     }
-    // изменяем управляющий сигнал на сервопривод
-    doors[door].servo.write(doors[door].angle);
   }
 }, 100);
 
