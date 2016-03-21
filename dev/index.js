@@ -4,7 +4,7 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var fs = require('fs');
-var path = require('path');
+// var path = require('path');
 
 var buttonStatisticFile = '/button_statistic.json';
 var buttonClicked = {feed: 0, scare: 0};
@@ -25,24 +25,24 @@ console.log(process.cwd());
   cd - cd
 */
 var doors = {
-  d1: {st: 'o', cd: 0},
-  d2: {st: 'o', cd: 0},
-  d3: {st: 'o', cd: 0},
-  d4: {st: 'o', cd: 0},
-  d5: {st: 'o', cd: 0},
-  d7: {st: 'o', cd: 0},
-  d9: {st: 'o', cd: 0},
-  d10: {st: 'o', cd: 0},
-  d11: {st: 'o', cd: 0},
-  d12: {st: 'o', cd: 0},
-  d13: {st: 'o', cd: 0},
-  d14: {st: 'o', cd: 0},
-  d15: {st: 'o', cd: 0},
-  d16: {st: 'o', cd: 0},
-  d17: {st: 'o', cd: 0}
+  d1: {st: 'o', cd: 0, text: '1'},
+  d2: {st: 'o', cd: 0, text: '2'},
+  d3: {st: 'o', cd: 0, text: '3'},
+  d4: {st: 'o', cd: 0, text: '4'},
+  d5: {st: 'o', cd: 0, text: '5'},
+  d7: {st: 'o', cd: 0, text: '6'},
+  d9: {st: 'o', cd: 0, text: '7'},
+  d10: {st: 'o', cd: 0, text: '8'},
+  d11: {st: 'o', cd: 0, text: '9'},
+  d12: {st: 'o', cd: 0, text: '10'},
+  d13: {st: 'o', cd: 0, text: '11'},
+  d14: {st: 'o', cd: 0, text: '12'},
+  d15: {st: 'o', cd: 0, text: '13'},
+  d16: {st: 'o', cd: 0, text: '14'},
+  d17: {st: 'o', cd: 0, text: '15'}
 };
 
-var doorsForClients = {
+/*var doorsForClients = {
   d1: {text: '1'},
   d2: {text: '2'},
   d3: {text: '3'},
@@ -58,7 +58,7 @@ var doorsForClients = {
   d15: {text: '13'},
   d16: {text: '14'},
   d17: {text: '15'}
-};
+};*/
 
 var vote = {
   feed: {st: 'o', cd: 0},
@@ -120,7 +120,7 @@ io.on('connection', function(socket) {
   socket.on('labirint_setup', function() {
     // console.log('labirint_setup: ' + msg);
     io.sockets.connected[user].emit('labirint_setup',
-      JSON.stringify(doorsForClients));
+      JSON.stringify(doors));
   });
 
   socket.on('allDoors', function() {
@@ -172,17 +172,23 @@ http.listen(HTTP_PORT, function() {
 var iskraServer = require('net').createServer(function(socket) {
   socket.on('data', function(data) {
     // console.log('Server received: ' + data);
+
+    var sendDoors = {};
+    for(var id in doors) {
+      sendDoors[id] = doors[id].st;
+    }
     socket.write(JSON.stringify({
       feed: vote.feed.st,
       scare: vote.scare.st,
-      doors: doors
+      doors: sendDoors
     }));
     vote.feed.st = 'c';
     vote.scare.st = 'c';
+
     // console.log('votes commands sent to Iskra.JS and reset');
   });
   // socket.write(JSON.stringify(servos));
-  socket.pipe(socket);
+  // socket.pipe(socket);
 });
 iskraServer.listen(UDP_PORT, '0.0.0.0');
 

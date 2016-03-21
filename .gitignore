@@ -1,2 +1,4 @@
 /node_modules
 /old
+/dev/button_statistic.json
+/prod/button_statistic.json

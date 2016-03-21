@@ -2,7 +2,6 @@ body {
 	margin: auto 0;
 }
 .wrapper {
-	background-color: #FF6600;
 	max-width: 740px;
 	width: 740px;
 	padding: 20px;
@@ -12,33 +11,32 @@ body {
 	width: 720px;
 	margin-top: 20px;
 	padding: 10px;
-	background-color: #d9d9d9;
 }
-.controlButtonsTitle {
+h2 {
 	text-align: center;
 	margin: 0 auto;
-	margin-bottom: 10px;
-	background-color: #d9d9d9;
 }
 .controlButtons {
 	text-align: center;
 	max-width: 450px;
 	margin: auto auto;
-	background-color: #d9d9d9;
 }
 .ctrlBtn {
+    margin: 5px;
+}
+/*.ctrlBtn {
 	margin: 10px;
 	width: 30px;
 	height: 30px;
 	border: 0px;
 	box-shadow: 2px 3px 3px rgba(0,0,0,0.5);
-}
-.ctrlBtn_closed {
+}*/
+/*.ctrlBtn_closed {
 	background-color: #d72e31;
 }
 .ctrlBtn_opened {
 	background-color: #056c60;
-}
+}*/
 .ctrlBtn_busy {
 	opacity: 0.5;
 }
@@ -77,7 +75,6 @@ body {
 	max-width: 700px;
 	width: 700px;
 	padding: 20px;
-	background-color: #d9d9d9;
 }
 .iv-embed {
 	width: 482px;
@@ -128,15 +125,21 @@ body {
 	width: 720px;
 	margin-top: 20px;
 	padding: 10px;
-	background-color: #d9d9d9;
 }
 .voteButtons {
 	text-align: center;
 	max-width: 450px;
 	margin: auto auto;
-	background-color: #d9d9d9;
 }
 .voteButton {
+    width: 120px;
+    height: 120px;
+	border-radius: 60px !important;
+    -moz-border-radius: 60px !important;
+    -webkit-border-radius: 60px !important;
+    margin: 20px;
+}
+/*.voteButton {
 	margin: 10px;
 	width: 80px;
 	height: 80px;
@@ -152,4 +155,4 @@ body {
 }
 .voteButtonFeed {
 	background-color: #056c60;
-}
+}*/
